@@ -58,7 +58,7 @@ def load_notes():       # This function loads notes from a database
         input_file = open(FILENAME, 'rb') # open the notes file (binary, reading)
         notes_dct = pickle.load(input_file)
         input_file.close()
-    except EOFError: # if can't open the file
+    except IOError: # if can't open the file
         notes_dct = {} # then create an empty dictionary
     return notes_dct
 
