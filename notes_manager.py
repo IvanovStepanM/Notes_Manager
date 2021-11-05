@@ -120,7 +120,8 @@ def change(mynotes):                    # This function changes the existing not
             text = input('Enter a new TEXT for a note with this ID:')   # Then it asks for a text for the note.
             if text != '':                                              # This if-else statements check
                 completed = int(True)                                   # if user actually filled the text
-                datecompleted = str(dt.today())
+                date = mynotes[id].get_date()
+                datecompleted = dt.today()
                 days_to_complete = datecompleted - date
                 days_to_complete = days_to_complete.days
                 message = 'It took %i days to complete this note' % (days_to_complete)
@@ -129,6 +130,7 @@ def change(mynotes):                    # This function changes the existing not
                 print('Note updated.')
             else:                                                       # or if he left the text blank.
                 completed = int(False)
+                date = mynotes[id].get_date()
                 datecompleted = 'Not completed'
                 message = 'None'
                 entry = Note.Note(id, date, title, text, completed, datecompleted, message)

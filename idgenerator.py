@@ -13,7 +13,7 @@ class idgenerator:
                 notes_dct = {} # then create an empty dictionary.
             id = random.randint(0, 9)   # First let's generate a random number from 0 to 9 to make id search easy.
             if id in notes_dct:             # If such number alreay exists then
-                id = random.randint(0, 99)      # let's try a two-digit number for id.
+                id = random.randint(10, 99)      # let's try a two-digit number for id.
                 #print(list(my_notes))
                 return id
             else:
