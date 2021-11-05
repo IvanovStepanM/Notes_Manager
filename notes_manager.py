@@ -68,11 +68,14 @@ def save_notes(mynotes):    # This function saves notes back to database.
     output_file.close()
 
 def look_up(mynotes): # show a note
-        print("there are ", len(mynotes), "notes saved, their IDs are like the following:", list(mynotes)[0:10], '...')
-        id = int(input('Enter ID to search:'))
-        if id in mynotes:
-            print("Here's data for the note with id", id, ':')
-        print(mynotes.get(id, 'note with this ID is not found'))
+        print("there are ", len(mynotes), "notes saved, their IDs are like the following:", list(mynotes)[0:10], '...')    
+        try:
+            id = int(input('Enter ID to search:'))
+            if id in mynotes:
+                print("Here's data for the note with id", id, ':')
+            print(mynotes.get(id, 'note with this ID is not found'))
+        except ValueError:
+            print('you have entered an empty string')
 
 def add(mynotes):   # This function adds a new note.
     title = input('Title:') # user inputs title for a new note
@@ -111,65 +114,72 @@ def add(mynotes):   # This function adds a new note.
 
     
 def change(mynotes):                    # This function changes the existing note.
-    id = int(input('Enter ID to search:'))  # by its ID.
+    try:
+        id = int(input('Enter ID to search:'))  # by its ID.
 
-    if id in mynotes:
-        option = input('Do you want to change the title? (y/n)')    # A user is aksed if he wants to change the title.
-        if option.lower() == 'y':
-            title = input('Enter a new TITLE for a note with this ID:') # First the title is being changed.
-            text = input('Enter a new TEXT for a note with this ID:')   # Then it asks for a text for the note.
-            if text != '':                                              # This if-else statements check
-                completed = int(True)                                   # if user actually filled the text
-                date = mynotes[id].get_date()
-                datecompleted = dt.today()
-                days_to_complete = datecompleted - date
-                days_to_complete = days_to_complete.days
-                message = 'It took %i days to complete this note' % (days_to_complete)
-                entry = Note.Note(id, date, title, text, completed, datecompleted, message)
-                mynotes[id] = entry # update the entry
-                print('Note updated.')
-            else:                                                       # or if he left the text blank.
-                completed = int(False)
-                date = mynotes[id].get_date()
-                datecompleted = 'Not completed'
-                message = 'None'
-                entry = Note.Note(id, date, title, text, completed, datecompleted, message)
-                mynotes[id] = entry # update the entry
-                print('Note updated.')
-        else:                                                           # This part is the same but in case user refused to
-            title = mynotes[id].get_title()                             # change the title.
-            text = input('Enter a new TEXT for a note with this ID:')
-            if text != '':                                              # If user filled the text,
-                date = mynotes[id].get_date()                           # then samely the note is considered complete.
-                completed = int(True)
-                datecompleted = dt.today()
-                days_to_complete = datecompleted - date
-                days_to_complete = days_to_complete.days
-                message = 'It took %i days to complete this note' % (days_to_complete)
-                entry = Note.Note(id, date, title, text, completed, datecompleted, message)
-                mynotes[id] = entry # update the entry
-                print('Note updated.')
-            else:                                                       # If user left the text blank,
-                date = mynotes[id].get_date()                           # then samely the note is considered incomplete.
-                completed = int(False)
-                datecompleted = 'Not completed'
-                message = 'None'
-                entry = Note.Note(id, date, title, text, completed, datecompleted, message)
-                mynotes[id] = entry # update the entry
-                print('Note updated.')
-    else:
-        print('There is no note with this ID.') # this message appears when there is no note with such ID.
-                                            ## probably this "add" function could be shorter, but its features had been added
-                                             ## step by step so I've decided not to re-write it.
+        if id in mynotes:
+            option = input('Do you want to change the title? (y/n)')    # A user is aksed if he wants to change the title.
+            if option.lower() == 'y':
+                title = input('Enter a new TITLE for a note with this ID:') # First the title is being changed.
+                text = input('Enter a new TEXT for a note with this ID:')   # Then it asks for a text for the note.
+                if text != '':                                              # This if-else statements check
+                    completed = int(True)                                   # if user actually filled the text
+                    date = mynotes[id].get_date()
+                    datecompleted = dt.today()
+                    days_to_complete = datecompleted - date
+                    days_to_complete = days_to_complete.days
+                    message = 'It took %i days to complete this note' % (days_to_complete)
+                    entry = Note.Note(id, date, title, text, completed, datecompleted, message)
+                    mynotes[id] = entry # update the entry
+                    print('Note updated.')
+                else:                                                       # or if he left the text blank.
+                    completed = int(False)
+                    date = mynotes[id].get_date()
+                    datecompleted = 'Not completed'
+                    message = 'None'
+                    entry = Note.Note(id, date, title, text, completed, datecompleted, message)
+                    mynotes[id] = entry # update the entry
+                    print('Note updated.')
+            else:                                                           # This part is the same but in case user refused to
+                title = mynotes[id].get_title()                             # change the title.
+                text = input('Enter a new TEXT for a note with this ID:')
+                if text != '':                                              # If user filled the text,
+                    date = mynotes[id].get_date()                           # then samely the note is considered complete.
+                    completed = int(True)
+                    datecompleted = dt.today()
+                    days_to_complete = datecompleted - date
+                    days_to_complete = days_to_complete.days
+                    message = 'It took %i days to complete this note' % (days_to_complete)
+                    entry = Note.Note(id, date, title, text, completed, datecompleted, message)
+                    mynotes[id] = entry # update the entry
+                    print('Note updated.')
+                else:                                                       # If user left the text blank,
+                    date = mynotes[id].get_date()                           # then samely the note is considered incomplete.
+                    completed = int(False)
+                    datecompleted = 'Not completed'
+                    message = 'None'
+                    entry = Note.Note(id, date, title, text, completed, datecompleted, message)
+                    mynotes[id] = entry # update the entry
+                    print('Note updated.')
+        else:
+            print('There is no note with this ID.') # this message appears when there is no note with such ID.
+                                                ## probably this "add" function could be shorter, but its features had been added
+                                                 ## step by step so I've decided not to re-write it.
+    except ValueError:
+        print('you have entered an empty string')
 
 def delete(mynotes):                            # This function deletes note by its ID.
-    id = int(input('Enter the ID of the note to delete:'))
+    try:
+        id = int(input('Enter the ID of the note to delete:'))
              
-    # If ID is found, delete the entry.
-    if id in mynotes:
-        del mynotes[id]
-        print('Entry deleted.')
-    else:
-        print('There is no note with this ID.')
+        # If ID is found, delete the entry.
+        if id in mynotes:
+            del mynotes[id]
+            print('Entry deleted.')
+        else:
+            print('There is no note with this ID.')
+
+    except ValueError:
+        print('you have entered an empty string')
 
 main()
